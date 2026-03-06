@@ -1,0 +1,733 @@
+:root {
+    --ontoy-topbar-bg: #2c3e50;
+    --ontoy-topbar-color: white;
+    --ontoy-topbar-height: 48px;
+    --ontoy-feature-primary: #2b6cb0;
+    --ontoy-feature-border: #e2e8f0;
+    --ontoy-elevation: 2px solid rgba(0, 0, 0, 0.12);
+    /* Favorites Menu Variables */
+    --favmnu-text: #2c3e50;
+    --favmnu-bg: #ffffff;
+    --favmnu-hover: #f1f5f9;
+    --favmnu-border: #dee2e6;
+    --favmnu-sep: #94a3b8;
+    --favmnu-accent: #2b6cb0;
+
+    /* Main Menu Variables */
+    --mainmnu-text: #2c3e50;
+    --mainmnu-bg: #ffffff;
+    --mainmnu-hover: #f1f5f9;
+    --mainmnu-border: #dee2e6;
+    --mainmnu-sep: #94a3b8;
+    --mainmnu-accent: #2b6cb0;
+}
+BODY {margin: 0; padding: 0;}
+.ontoy-container {
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap:0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    font-family: system-ui, sans-serif;
+}
+
+/* --- 1. TOP NAVIGATION BAR --- */
+.ontoy-topbar {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--ontoy-topbar-height);
+    background-color: var(--ontoy-topbar-bg);
+    border-bottom: var(--ontoy-elevation);
+    color: var(--ontoy-topbar-color);
+    padding: 0 16px;
+}
+
+.ontoy-topbar-section { display: flex; align-items: center; gap: 12px; }
+.ontoy-logo { font-weight: 800; font-size: 1.1rem; text-decoration: none; color: white; display: flex; align-items: center; }
+
+.ontoy-topbar-icon {
+    background: none; border: none; color: white; cursor: pointer; font-size: 1.1rem;
+    padding: 6px; border-radius: 4px; transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+}
+.ontoy-topbar-icon:hover { background: rgba(255,255,255,0.1); }
+.ontoy-topbar-exit { color: #fc8181; }
+
+/* --- 2. FEATURE HEADER --- */
+.ontoy-feature-header {
+    background: #ffffff;
+    border-bottom: 2px solid var(--ontoy-feature-border);
+    padding: 4px 16px;
+}
+
+.ontoy-feature-row-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    min-height: 36px;
+}
+
+.ontoy-feature-identity { display: flex; align-items: center; gap: 10px; }
+.ontoy-feature-title { font-size: 0.95rem; font-weight: 700; margin: 0; color: #2d3748; }
+
+.ontoy-feature-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 6px;
+    padding-right: 12px;
+    margin-right: 12px;
+    border-right: 1px solid var(--ontoy-feature-border);
+}
+
+.ontoy-feature-actions {
+    display: flex;
+    flex-direction: row;
+    justify-items: start;
+    align-items: center;
+    gap: 4px;
+}
+
+.ontoy-feature-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-items: start;
+    align-items: center;
+    gap: 0;
+}
+
+.ontoy-feature-btn {
+    cursor: pointer;
+    padding: 0.3em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.1);
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    margin: 0 1px;
+}
+
+.ontoy-feature-btn:hover {background: #e8e8e8;outline-color: #999;}
+.ontoy-feature-btn:active {
+    background: #dcdcdc;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.ontoy-feature-btn.ontoy-feature-primary {
+    background: var(--ontoy-feature-primary);
+    color: white;
+    border-color: #1a4a8d;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.ontoy-feature-btn.ontoy-feature-primary:hover { background: #235a96; }
+.ontoy-feature-btn.ontoy-feature-primary:active { background: #1c4a7a; }
+
+.ontoy-feature-row-breadcrumbs {
+    display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: #718096; margin-top: 1px;
+}
+.ontoy-bc-item { text-decoration: none; color: inherit; cursor: pointer; }
+.ontoy-bc-item.ontoy-current { font-weight: 600; color: #4a5568; }
+
+.ontoy-feature-row-context {
+    font-size: 0.75rem; color: #4a5568; min-height: 1.2rem; margin-top: 4px;
+    padding: 2px 8px; background: #f8fafc; border-radius: 4px; display: flex; align-items: center; gap: 6px;
+}
+.ontoy-help-text { font-style: italic; opacity: 0.9; }
+.ontoy-mnemonic {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+.ontoy-main { flex: 1 0 auto; padding: 16px; }
+.ontoy-footer { flex-shrink: 0; padding: 12px 16px; background: #f8fafc; border-top: 1px solid var(--ontoy-feature-border); font-size: 0.8rem; color: #64748b; }
+
+/* --- 3. FAVORITES MENU STYLES --- */
+.favmnu-wrapper {
+    all: initial;
+    display: inline-block;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.favmnu-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.favmnu-trigger:hover { background: rgba(255,255,255,0.1); }
+
+.favmnu-dropdown {
+    position: fixed;
+    background: var(--favmnu-bg);
+    border: 1px solid var(--favmnu-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    z-index: 10000;
+    min-width: 240px;
+    max-width: 320px;
+    max-height: 80vh;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+/* CRITICAL UI RULE: DO NOT USE BLUR, BACKDROP-FILTER, OR GLASS-MORPHISM.
+Reason: Causes pixelation, high GPU load, and bad UX (Governance/QA Approved).
+Keep background-color as a simple semi-transparent hex or rgba.
+*/
+.favmnu-dropdown::backdrop { background: transparent; backdrop-filter: none !important;}
+
+.favmnu-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding: 8px 8px 4px;
+    font-weight: 600;
+}
+
+.favmnu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.favmnu-list::-webkit-scrollbar { width: 6px; }
+.favmnu-list::-webkit-scrollbar-track { background: transparent; }
+.favmnu-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+.favmnu-item { border-bottom: 1px solid #f1f5f9; }
+.favmnu-item:last-child { border-bottom: none; }
+
+.favmnu-item a {
+    display: flex; align-items: center;
+    padding: 8px;
+    line-height: 1.2;
+    min-height: 32px;
+    text-decoration: none;
+    color: var(--favmnu-text);
+    font-size: 0.9em;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+.favmnu-item:hover a,
+.favmnu-item a:focus {
+    background-color: var(--favmnu-hover);
+    outline: none;
+}
+
+.favmnu-icon {
+    width: 1.5em;
+    display: inline-flex;
+    justify-content: center;
+    margin-right: 8px;
+    font-style: normal;
+}
+
+.favmnu-system-links {
+    border-top: 2px solid var(--favmnu-sep);
+    background: #f8fafc;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.favmnu-actions {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid var(--favmnu-border);
+    margin-top: 4px;
+}
+
+.favmnu-btn-act {
+    cursor: pointer;
+    width: 100%;
+    padding: 8px;
+    text-align: left;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font: inherit;
+    color: var(--favmnu-text);
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.favmnu-btn-act:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.favmnu-btn-act i { width: 1.2em; text-align: center; }
+
+/* --- 4. MAIN MENU (HIERARCHICAL) STYLES --- */
+.mainmnu-wrapper {
+    all: initial;
+    display: inline-block;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.mainmnu-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.mainmnu-trigger:hover { background: rgba(255,255,255,0.1); }
+
+.mainmnu-dropdown {
+    position: fixed;
+    background: var(--mainmnu-bg);
+    border: 1px solid var(--mainmnu-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    z-index: 10000;
+    min-width: 280px;
+    max-width: 360px;
+    max-height: 85vh;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+/* CRITICAL UI RULE: DO NOT USE BLUR, BACKDROP-FILTER, OR GLASS-MORPHISM.
+Reason: Causes pixelation, high GPU load, and bad UX (Governance/QA Approved).
+Keep background-color as a simple semi-transparent hex or rgba.
+*/
+.mainmnu-dropdown::backdrop { background: transparent; backdrop-filter: none !important;}
+
+.mainmnu-header {
+    background: var(--ontoy-topbar-bg);
+    color: white;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: var(--ontoy-elevation);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainmnu-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.mainmnu-close:hover { background: rgba(255,255,255,0.1); }
+
+.mainmnu-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.mainmnu-content::-webkit-scrollbar { width: 6px; }
+.mainmnu-content::-webkit-scrollbar-track { background: transparent; }
+.mainmnu-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+.mainmnu-list { list-style: none; padding: 0; margin: 0; }
+
+.mainmnu-item { position: relative; }
+
+.mainmnu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: var(--mainmnu-text);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin: 2px 0;
+}
+
+.mainmnu-link:hover,
+.mainmnu-link:focus {
+    background-color: var(--mainmnu-hover);
+    outline: none;
+}
+
+.mainmnu-link-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mainmnu-chevron {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    transition: transform 0.2s;
+}
+
+.mainmnu-item.expanded > .mainmnu-link .mainmnu-chevron {
+    transform: rotate(90deg);
+}
+
+.mainmnu-submenu {
+    list-style: none;
+    margin: 2px 0 4px 1.25rem;
+    padding: 0 0 0 1.5rem;
+    display: none;
+    border-left: 2px solid #e2e8f0;
+}
+
+.mainmnu-item.expanded > .mainmnu-submenu {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.mainmnu-submenu .mainmnu-link {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    color: #475569;
+}
+
+.mainmnu-separator {
+    height: 1px;
+    background: var(--mainmnu-border);
+    margin: 8px 0;
+}
+
+.mainmnu-section-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding: 8px 12px 4px;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.mainmnu-icon {
+    width: 1.5em;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+}
+
+/* --- 5. DIALOG STYLES (Shared) --- */
+.ontoy-dlg, .ontoy-dlg * { box-sizing: border-box; }
+/* CRITICAL UI RULE: DO NOT USE BLUR, BACKDROP-FILTER, OR GLASS-MORPHISM.
+Reason: Causes pixelation, high GPU load, and bad UX (Governance/QA Approved).
+Keep background-color as a simple semi-transparent hex or rgba.
+*/
+.ontoy-dlg::backdrop { background-color: transparent; backdrop-filter: none !important; }
+.ontoy-dlg[open] { display: flex; flex-direction: column; }
+.ontoy-dlg {
+    resize: both;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    border: 1px solid #888;
+    border-radius: 6px;
+    min-width: 300px;
+    width: fit-content;
+    max-width: 95vw;
+    min-height: 200px;
+    height: fit-content;
+    max-height: 95vh;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: white;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.ontoy-dlg-header {
+    background: var(--ontoy-topbar-bg);
+    color: white;
+    padding: 12px 16px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    flex: 0 0 auto;
+    user-select: none;
+}
+
+.ontoy-dlg-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.ontoy-dlg-footer {
+    padding: 1rem;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.ontoy-dlg-close {
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.ontoy-dlg-close:hover { background: rgba(255,255,255,0.1); }
+
+/* Form Controls in Dialogs */
+.ontoy-input {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 100%;
+    font-family: inherit;
+}
+.ontoy-input:focus {
+    outline: none;
+    border-color: var(--ontoy-feature-primary);
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+.ontoy-dlg-btn {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.ontoy-dlg-btn-secondary {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+.ontoy-dlg-btn-secondary:hover { background: #e2e8f0; }
+
+.ontoy-dlg-btn-primary {
+    background: var(--ontoy-feature-primary);
+    color: white;
+    border-color: #1a4a8d;
+}
+.ontoy-dlg-btn-primary:hover { background: #235a96; }
+
+.ontoy-dlg-btn-danger {
+    color: #dc2626;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+.ontoy-dlg-btn-danger:hover { background: #fee2e2; }
+
+/* Icon Picker Styles */
+.icon-select-trigger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: white;
+    min-width: 60px;
+    gap: 8px;
+}
+.icon-select-trigger:hover { border-color: #94a3b8; }
+
+.icon-picker-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+    z-index: 10001;
+}
+/* CRITICAL UI RULE: DO NOT USE BLUR, BACKDROP-FILTER, OR GLASS-MORPHISM.
+Reason: Causes pixelation, high GPU load, and bad UX (Governance/QA Approved).
+Keep background-color as a simple semi-transparent hex or rgba.
+*/
+
+.icon-picker-dialog::backdrop { background: transparent; backdrop-filter: none !important;}
+
+.icon-picker-content {
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    width: 280px;
+}
+
+.icon-picker-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.icon-option {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    background: white;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.icon-option:hover { background-color: #f1f5f9; }
+
+/* Sortable Row Styles */
+.ontoy-dlg-sort-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+}
+.ontoy-dlg-sort-handle {
+    cursor: grab;
+    color: #94a3b8;
+    font-size: 1.2em;
+    padding: 0 4px;
+    user-select: none;
+}
+.ontoy-dlg-sort-handle:active { cursor: grabbing; }
+.ontoy-dlg-col-name { flex: 1; min-width: 120px; }
+.ontoy-dlg-col-icon { width: 50px; text-align: center; }
+.ontoy-dlg-col-color { width: 50px; cursor: pointer; }
+.ontoy-dlg-bold-active { background: var(--ontoy-feature-primary); color: white; border-color: var(--ontoy-feature-primary); }
+
+@media print {
+    .ontoy-topbar, .ontoy-feature-header, .ontoy-dlg, .favmnu-dropdown, .mainmnu-dropdown,
+    button, input[type='submit'], input[type='reset'], input[type="image"]
+    { display: none !important; }
+    [data-noprint] { display: none !important; }
+    .noprint { display: none !important; }
+    main { width: 100%; margin: 0; }
+}
+
+.ontoy-scrollable {
+    overflow: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+/* Webkit: Chrome, Android (Firebase WebViews), Safari (iOS/macOS) */
+.ontoy-scrollable::-webkit-scrollbar {
+    width: 8px;   /* Vertical width */
+    height: 8px;  /* Horizontal height for tables/images */
+}
+
+.ontoy-scrollable::-webkit-scrollbar-thumb {
+    background-color: #94a3b8;
+    border-radius: 4px;
+    /* Border creates the 'padding' look without shrinking the touch area */
+    border: 2px solid #f1f5f9;
+}
+
+.ontoy-scrollable::-webkit-scrollbar-track {
+    /* The lane is always visible so the user knows where the boundary is */
+    background-color: #f1f5f9;
+}
+
+/* 5. Corner (Where bars meet) Prevents the 'white box' bug in the bottom-right corner */
+.ontoy-scrollable::-webkit-scrollbar-corner {
+    background-color: #f1f5f9;
+}
+
+/* 6. Resizer (For resizable elements) Ensures the resize handle matches the track color */
+.ontoy-scrollable::-webkit-scrollbar-resizer {
+    background-color: #f1f5f9;
+}
+/* 7. The Track-Piece (CRITICAL FOR SAFARI/iOS) Prevents auto-hiding during idle */
+.ontoy-scrollable::-webkit-scrollbar-track-piece {
+    background-color: #f1f5f9;
+}
+
+/* 8. Corner (Where bars meet) Prevents the 'white box' bug */
+.ontoy-scrollable::-webkit-scrollbar-corner {
+    background-color: #f1f5f9;
+}
+
+/* 9. Resizer (For resizable elements) Matches the track color */
+.ontoy-scrollable::-webkit-scrollbar-resizer {
+    background-color: #f1f5f9;
+}
