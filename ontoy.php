@@ -30,7 +30,7 @@
     <script>
         (function() {
             function initFeature() {
-                initFeatureHeader({
+                FeatureHeader.init({
                     title: "La hoja",
                     help: "Ayuda de la hoja",
                     breadcrumbs: [
@@ -42,7 +42,7 @@
                         { label: "Nuevo", id: "btn-new", primary: true, help: "Crear nuevo registro" },
                         { label: "Exportar", id: "btn-export", help: "Exportar datos" }
                     ],
-                    toolbar: { buttons: ["copy", "csv", "print"], onClick: "handleExport" }
+                    toolbar: ["copy", "csv", "print"]
                 });
             }
             if(document.readyState === 'loading')

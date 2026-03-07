@@ -1137,145 +1137,134 @@ class MainMenu {
    FEATURE BAR
    ============================================================ */
 
-function initFeatureHeader(pageConfig, handlers) {
-    pageConfig = pageConfig || {};
-    handlers = handlers || {};
+const FeatureHeader = {
 
-    // Title
-    const titleEl = document.getElementById('ontoy-feature-title');
-    if (titleEl) titleEl.textContent = pageConfig.title || '';
+    init(pageConfig) {
+        pageConfig = pageConfig || {};
 
+        // Internal helper to render an item (Action or Toolbar item)
+        const renderCommand = (container, item) => {
+            if (!item) return;
 
-    // 2. Actions (Buttons or Links)
-    const actionContainer = document.getElementById('ontoy-action-container');
-    if (actionContainer) {
-        actionContainer.innerHTML = '';
-        (pageConfig.actions || []).forEach(act => {
-            const isLink = !!act.href;
+            const isLink = !!item.href;
             const el = document.createElement(isLink ? 'a' : 'button');
 
-            // Base classes and identity
-            el.className = `ontoy-feature-btn ${act.primary ? 'ontoy-feature-primary' : ''}`;
-            if (act.id) el.id = act.id;
-            el.innerHTML = act.label || '';
-            if (act.help) el.setAttribute('data-help', act.help);
+            el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
+            if (item.id) el.id = item.id;
+            el.innerHTML = item.label || '';
+            if (item.help) el.setAttribute('data-help', item.help);
+            if (item.title) el.title = item.title;
 
             if (isLink) {
-                // --- LINK SPECIFIC ---
-                el.href = act.href;
-                if (act.target) el.target = act.target;
-                // Links don't need double-click protection usually,
-                // but we can add it if needed.
+                el.href = item.href;
+                if (item.target) el.target = item.target;
             } else {
-                // --- BUTTON SPECIFIC ---
                 el.type = 'button';
-                if (typeof act.action === 'function') {
+                if (typeof item.action === 'function') {
                     el.onclick = (e) => {
                         if (el.disabled) return;
                         el.disabled = true;
-
-                        act.action(e);
-
-                        // Re-enable after a short delay to prevent "stuck" buttons
+                        item.action(e);
                         setTimeout(() => { el.disabled = false; }, 500);
                     };
                 }
             }
+            container.appendChild(el);
+        };
 
-            actionContainer.appendChild(el);
-        });
-    }
+        // Title
+        const titleEl = document.getElementById('ontoy-feature-title');
+        if (titleEl) titleEl.textContent = pageConfig.title || '';
 
-    // Toolbar
-    const toolbarDefaults = {
-        copy: {
-            label: '<i class="fa-solid fa-copy"></i>',
-            help: "Copiar al portapapeles",
-            title: "Copiar",
-            action: (e) => { console.log("Copy triggered"); }
-        },
-        csv: {
-            label: '<i class="fa-solid fa-file-csv"></i>',
-            help: "Exportar a CSV",
-            title: "CSV",
-            action: (e) => { console.log("CSV triggered"); }
-        },
-        print: {
-            label: '<i class="fa-solid fa-print"></i>',
-            help: "Imprimir documento",
-            title: "Imprimir",
-            action: (e) => window.print()
+// 2. Actions
+        const actionContainer = document.getElementById('ontoy-action-container');
+        if (actionContainer) {
+            actionContainer.innerHTML = '';
+            (pageConfig.actions || []).forEach(act => renderCommand(actionContainer, act));
         }
-    };
-    const toolbarContainer = document.getElementById('ontoy-toolbar-container');
-    if (toolbarContainer && pageConfig.toolbar) {
-        toolbarContainer.innerHTML = '';
-        const buttons = pageConfig.toolbar.buttons || [];
-        buttons.forEach(btnKey => {
-            const config = toolbarDefaults[btnKey] || {};
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'ontoy-feature-btn';
-            btn.innerHTML = config.icon || '';
-            btn.title = config.title || '';
-            if (config.help) btn.setAttribute('data-help', config.help);
-            toolbarContainer.appendChild(btn);
-        });
-    }
 
-    // Breadcrumbs
-    const bcContainer = document.getElementById('ontoy-breadcrumb-container');
-    if (bcContainer) {
-        bcContainer.innerHTML = '';
-        const breadcrumbs = pageConfig.breadcrumbs || [];
-        breadcrumbs.forEach((bc, i) => {
-            if (!bc) return;
-            const el = document.createElement(bc.url ? 'a' : 'span');
-            if (bc.url) el.href = bc.url;
-            if (bc.help) el.setAttribute('data-help', bc.help);
-            el.className = `ontoy-bc-item ${!bc.url ? 'ontoy-current' : ''}`;
-            el.textContent = bc.label || '';
-            bcContainer.appendChild(el);
-            if (i < breadcrumbs.length - 1) {
-                bcContainer.append(' › ');
+        // 3. Toolbar (Resolved from defaults or custom objects)
+        const toolbarDefaults = {
+            copy: {
+                label: '<i class="fa-solid fa-copy"></i>',
+                help: "Copiar al portapapeles",
+                title: "Copiar",
+                action: (e) => { console.log("Copy triggered"); }
+            },
+            csv: {
+                label: '<i class="fa-solid fa-file-csv"></i>',
+                help: "Exportar a CSV",
+                title: "CSV",
+                action: (e) => { console.log("CSV triggered"); }
+            },
+            print: {
+                label: '<i class="fa-solid fa-print"></i>',
+                help: "Imprimir documento",
+                title: "Imprimir",
+                action: (e) => window.print()
             }
-        });
-    }
+        };
+        const toolbarContainer = document.getElementById('ontoy-toolbar-container');
+        if (toolbarContainer) {
+            toolbarContainer.innerHTML = '';
+            (pageConfig.toolbar || []).forEach(tbItem => {
+                // If it's a string like "copy", get from defaults; else use the object
+                const config = (typeof tbItem === 'string') ? toolbarDefaults[tbItem] : tbItem;
+                renderCommand(toolbarContainer, config);
+            });
+        }
 
-    const helpDisplay = document.getElementById('ontoy-help-display');
-    const headerEl = document.querySelector('.ontoy-feature-header');
-    const defaultHelp = pageConfig.help || '...';
+        // 4. Breadcrumbs
+        const bcContainer = document.getElementById('ontoy-breadcrumb-container');
+        if (bcContainer) {
+            bcContainer.innerHTML = '';
+            const breadcrumbs = pageConfig.breadcrumbs || [];
+            breadcrumbs.forEach((bc, i) => {
+                if (!bc) return;
+                const el = document.createElement(bc.url ? 'a' : 'span');
+                if (bc.url) el.href = bc.url;
+                if (bc.help) el.setAttribute('data-help', bc.help);
+                el.className = `ontoy-bc-item ${!bc.url ? 'ontoy-current' : ''}`;
+                el.textContent = bc.label || '';
+                bcContainer.appendChild(el);
+                if (i < breadcrumbs.length - 1) {
+                    bcContainer.append(' › ');
+                }
+            });
+        }
 
-    if (helpDisplay && headerEl) {
-        helpDisplay.textContent = defaultHelp;
-        // Store default help in a data attribute for the named function to access
-        headerEl.dataset.defaultHelp = defaultHelp;
+        const helpDisplay = document.getElementById('ontoy-help-display');
+        const headerEl = document.querySelector('.ontoy-feature-header');
+        const defaultHelp = pageConfig.help || '...';
 
-        // 6. Manage Event Listeners (Remove then Add)
-        headerEl.removeEventListener('mouseover', handleHeaderMouseOver);
-        headerEl.removeEventListener('mouseout', handleHeaderMouseOut);
+        if (helpDisplay && headerEl) {
+            helpDisplay.textContent = defaultHelp;
+            // Store default help in a data attribute for the named function to access
+            headerEl.dataset.defaultHelp = defaultHelp;
 
-        headerEl.addEventListener('mouseover', handleHeaderMouseOver);
-        headerEl.addEventListener('mouseout', handleHeaderMouseOut);
-    }
-}
+            // 6. Manage Event Listeners (Remove then Add)
+            headerEl.removeEventListener('mouseover', FeatureHeader._helpMouseOver);
+            headerEl.removeEventListener('mouseout', FeatureHeader._helpMouseOut);
 
-/**
- * Event handlers for the Feature Header context help
- */
-function handleHeaderMouseOver(e) {
-    const helpDisplay = document.getElementById('ontoy-help-display');
-    const target = e.target.closest('[data-help]');
-    if (target && helpDisplay) {
-        helpDisplay.textContent = target.getAttribute('data-help');
-    }
-}
+            headerEl.addEventListener('mouseover', FeatureHeader._helpMouseOver);
+            headerEl.addEventListener('mouseout', FeatureHeader._helpMouseOut);
+        }
+    },
 
-function handleHeaderMouseOut(e) {
-    const helpDisplay = document.getElementById('ontoy-help-display');
-    // We retrieve the default help text stored on the container
-    const headerEl = document.querySelector('.ontoy-feature-header');
-    if (helpDisplay && headerEl) {
-        helpDisplay.textContent = headerEl.dataset.defaultHelp || '...';
+    _helpMouseOver(e) {
+        const helpDisplay = document.getElementById('ontoy-help-display');
+        const target = e.target.closest('[data-help]');
+        if (target && helpDisplay) {
+            helpDisplay.textContent = target.getAttribute('data-help');
+        }
+    },
+    
+    _helpMouseOut(e) {
+        const helpDisplay = document.getElementById('ontoy-help-display');
+        // We retrieve the default help text stored on the container
+        const headerEl = document.querySelector('.ontoy-feature-header');
+        if(helpDisplay && headerEl) {
+            helpDisplay.textContent = headerEl.dataset.defaultHelp || '...';
+        }
     }
 }
