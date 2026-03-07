@@ -46,9 +46,9 @@
                 });
             }
             if(document.readyState === 'loading')
-                document.addEventListener('DOMContentLoaded', initFeatureHeader);
+                document.addEventListener('DOMContentLoaded', initFeature);
             else
-                initFeatureHeader();
+                initFeature();
         })();
     </script>
 

@@ -1145,28 +1145,68 @@ function initFeatureHeader(pageConfig, handlers) {
     const titleEl = document.getElementById('ontoy-feature-title');
     if (titleEl) titleEl.textContent = pageConfig.title || '';
 
-    // Actions
+
+    // 2. Actions (Buttons or Links)
     const actionContainer = document.getElementById('ontoy-action-container');
     if (actionContainer) {
         actionContainer.innerHTML = '';
         (pageConfig.actions || []).forEach(act => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = `ontoy-feature-btn ${act && act.primary ? 'ontoy-feature-primary' : ''}`;
-            if (act && act.id) btn.id = act.id;
-            btn.innerHTML = act?.label || '';
-            if (act && act.help) btn.setAttribute('data-help', act.help);
-            actionContainer.appendChild(btn);
+            const isLink = !!act.href;
+            const el = document.createElement(isLink ? 'a' : 'button');
+
+            // Base classes and identity
+            el.className = `ontoy-feature-btn ${act.primary ? 'ontoy-feature-primary' : ''}`;
+            if (act.id) el.id = act.id;
+            el.innerHTML = act.label || '';
+            if (act.help) el.setAttribute('data-help', act.help);
+
+            if (isLink) {
+                // --- LINK SPECIFIC ---
+                el.href = act.href;
+                if (act.target) el.target = act.target;
+                // Links don't need double-click protection usually,
+                // but we can add it if needed.
+            } else {
+                // --- BUTTON SPECIFIC ---
+                el.type = 'button';
+                if (typeof act.action === 'function') {
+                    el.onclick = (e) => {
+                        if (el.disabled) return;
+                        el.disabled = true;
+
+                        act.action(e);
+
+                        // Re-enable after a short delay to prevent "stuck" buttons
+                        setTimeout(() => { el.disabled = false; }, 500);
+                    };
+                }
+            }
+
+            actionContainer.appendChild(el);
         });
     }
 
     // Toolbar
     const toolbarDefaults = {
-        copy: { icon: '<i class="fa-solid fa-copy"></i>', help: "Copiar al portapapeles", title: "Copiar" },
-        csv: { icon: '<i class="fa-solid fa-file-csv"></i>', help: "Exportar a CSV", title: "CSV" },
-        print: { icon: '<i class="fa-solid fa-print"></i>', help: "Imprimir documento", title: "Imprimir" }
+        copy: {
+            label: '<i class="fa-solid fa-copy"></i>',
+            help: "Copiar al portapapeles",
+            title: "Copiar",
+            action: (e) => { console.log("Copy triggered"); }
+        },
+        csv: {
+            label: '<i class="fa-solid fa-file-csv"></i>',
+            help: "Exportar a CSV",
+            title: "CSV",
+            action: (e) => { console.log("CSV triggered"); }
+        },
+        print: {
+            label: '<i class="fa-solid fa-print"></i>',
+            help: "Imprimir documento",
+            title: "Imprimir",
+            action: (e) => window.print()
+        }
     };
-
     const toolbarContainer = document.getElementById('ontoy-toolbar-container');
     if (toolbarContainer && pageConfig.toolbar) {
         toolbarContainer.innerHTML = '';
@@ -1192,6 +1232,7 @@ function initFeatureHeader(pageConfig, handlers) {
             if (!bc) return;
             const el = document.createElement(bc.url ? 'a' : 'span');
             if (bc.url) el.href = bc.url;
+            if (bc.help) el.setAttribute('data-help', bc.help);
             el.className = `ontoy-bc-item ${!bc.url ? 'ontoy-current' : ''}`;
             el.textContent = bc.label || '';
             bcContainer.appendChild(el);
@@ -1201,10 +1242,40 @@ function initFeatureHeader(pageConfig, handlers) {
         });
     }
 
-    // Help text
     const helpDisplay = document.getElementById('ontoy-help-display');
-    if (helpDisplay && pageConfig.help) {
-        helpDisplay.textContent = pageConfig.help;
+    const headerEl = document.querySelector('.ontoy-feature-header');
+    const defaultHelp = pageConfig.help || '...';
+
+    if (helpDisplay && headerEl) {
+        helpDisplay.textContent = defaultHelp;
+        // Store default help in a data attribute for the named function to access
+        headerEl.dataset.defaultHelp = defaultHelp;
+
+        // 6. Manage Event Listeners (Remove then Add)
+        headerEl.removeEventListener('mouseover', handleHeaderMouseOver);
+        headerEl.removeEventListener('mouseout', handleHeaderMouseOut);
+
+        headerEl.addEventListener('mouseover', handleHeaderMouseOver);
+        headerEl.addEventListener('mouseout', handleHeaderMouseOut);
     }
 }
 
+/**
+ * Event handlers for the Feature Header context help
+ */
+function handleHeaderMouseOver(e) {
+    const helpDisplay = document.getElementById('ontoy-help-display');
+    const target = e.target.closest('[data-help]');
+    if (target && helpDisplay) {
+        helpDisplay.textContent = target.getAttribute('data-help');
+    }
+}
+
+function handleHeaderMouseOut(e) {
+    const helpDisplay = document.getElementById('ontoy-help-display');
+    // We retrieve the default help text stored on the container
+    const headerEl = document.querySelector('.ontoy-feature-header');
+    if (helpDisplay && headerEl) {
+        helpDisplay.textContent = headerEl.dataset.defaultHelp || '...';
+    }
+}
