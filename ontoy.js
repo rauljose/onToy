@@ -1149,16 +1149,18 @@ const FeatureHeader = {
             const isLink = !!item.href;
             const el = document.createElement(isLink ? 'a' : 'button');
 
-            el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
+
             if (item.id) el.id = item.id;
             el.innerHTML = item.label || '';
             if (item.help) el.setAttribute('data-help', item.help);
             if (item.title) el.title = item.title;
 
             if (isLink) {
+                el.className = `as-button ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
                 el.href = item.href;
                 if (item.target) el.target = item.target;
             } else {
+                el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
                 el.type = 'button';
                 if (typeof item.action === 'function') {
                     el.onclick = (e) => {

@@ -731,3 +731,52 @@ Keep background-color as a simple semi-transparent hex or rgba.
 .ontoy-scrollable::-webkit-scrollbar-resizer {
     background-color: #f1f5f9;
 }
+
+/* region: as-button simlate a button _______________________________________________________________________________*/
+
+.as-button {
+
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+
+    appearance: button;
+    -webkit-appearance: button; /* For Safari/Chrome */
+    -moz-appearance: button;    /* For Firefox */
+
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 1em;
+    padding: 0.15em 0.45em;
+    border: 1px solid #767676;
+    border-radius: 2px;
+    background-color: ButtonFace;
+    color: ButtonText;
+
+    /* 4. Text alignment and spacing */
+    text-align: center;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+
+.as-button:hover {
+    /* background-color: #e5e5e5; */
+    filter: brightness(1.05);
+    border-color: #4f4f4f;
+    border-style: inset;
+}
+
+.as-button:active {
+    /* background-color: #d5d5d5; */
+    filter: brightness(0.9) contrast(1.1);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    border-style: inset;
+}
+
+.as-button.disabled {
+background-color: #f5f5f5;
+color: #858585;
+border-color: #d1d1d1;
+pointer-events: none;
+cursor: not-allowed;
+}
+/* endregion: as-button simlate a button ___________________________________________________________________________*/
