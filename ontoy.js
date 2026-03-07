@@ -902,77 +902,6 @@ class FavoritesMenu {
 
 }
 
-function initFeatureHeader(pageConfig, handlers) {
-    pageConfig = pageConfig || {};
-    handlers = handlers || {};
-
-    // Title
-    const titleEl = document.getElementById('ontoy-feature-title');
-    if (titleEl) titleEl.textContent = pageConfig.title || '';
-
-    // Actions
-    const actionContainer = document.getElementById('ontoy-action-container');
-    if (actionContainer) {
-        actionContainer.innerHTML = '';
-        (pageConfig.actions || []).forEach(act => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = `ontoy-feature-btn ${act && act.primary ? 'ontoy-feature-primary' : ''}`;
-            if (act && act.id) btn.id = act.id;
-            btn.innerHTML = act?.label || '';
-            if (act && act.help) btn.setAttribute('data-help', act.help);
-            actionContainer.appendChild(btn);
-        });
-    }
-
-    // Toolbar
-    const toolbarDefaults = {
-        copy: { icon: '<i class="fa-solid fa-copy"></i>', help: "Copiar al portapapeles", title: "Copiar" },
-        csv: { icon: '<i class="fa-solid fa-file-csv"></i>', help: "Exportar a CSV", title: "CSV" },
-        print: { icon: '<i class="fa-solid fa-print"></i>', help: "Imprimir documento", title: "Imprimir" }
-    };
-
-    const toolbarContainer = document.getElementById('ontoy-toolbar-container');
-    if (toolbarContainer && pageConfig.toolbar) {
-        toolbarContainer.innerHTML = '';
-        const buttons = pageConfig.toolbar.buttons || [];
-        buttons.forEach(btnKey => {
-            const config = toolbarDefaults[btnKey] || {};
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'ontoy-feature-btn';
-            btn.innerHTML = config.icon || '';
-            btn.title = config.title || '';
-            if (config.help) btn.setAttribute('data-help', config.help);
-            toolbarContainer.appendChild(btn);
-        });
-    }
-
-    // Breadcrumbs
-    const bcContainer = document.getElementById('ontoy-breadcrumb-container');
-    if (bcContainer) {
-        bcContainer.innerHTML = '';
-        const breadcrumbs = pageConfig.breadcrumbs || [];
-        breadcrumbs.forEach((bc, i) => {
-            if (!bc) return;
-            const el = document.createElement(bc.url ? 'a' : 'span');
-            if (bc.url) el.href = bc.url;
-            el.className = `ontoy-bc-item ${!bc.url ? 'ontoy-current' : ''}`;
-            el.textContent = bc.label || '';
-            bcContainer.appendChild(el);
-            if (i < breadcrumbs.length - 1) {
-                bcContainer.append(' › ');
-            }
-        });
-    }
-
-    // Help text
-    const helpDisplay = document.getElementById('ontoy-help-display');
-    if (helpDisplay && pageConfig.help) {
-        helpDisplay.textContent = pageConfig.help;
-    }
-}
-
 /* ============================================================
    MAIN HIERARCHICAL MENU CLASS
    ============================================================ */
@@ -1202,3 +1131,80 @@ class MainMenu {
         this.focusableItems[index].scrollIntoView({ block: 'nearest' });
     }
 }
+
+/* ============================================================
+   FEATURE BAR
+   FEATURE BAR
+   ============================================================ */
+
+function initFeatureHeader(pageConfig, handlers) {
+    pageConfig = pageConfig || {};
+    handlers = handlers || {};
+
+    // Title
+    const titleEl = document.getElementById('ontoy-feature-title');
+    if (titleEl) titleEl.textContent = pageConfig.title || '';
+
+    // Actions
+    const actionContainer = document.getElementById('ontoy-action-container');
+    if (actionContainer) {
+        actionContainer.innerHTML = '';
+        (pageConfig.actions || []).forEach(act => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `ontoy-feature-btn ${act && act.primary ? 'ontoy-feature-primary' : ''}`;
+            if (act && act.id) btn.id = act.id;
+            btn.innerHTML = act?.label || '';
+            if (act && act.help) btn.setAttribute('data-help', act.help);
+            actionContainer.appendChild(btn);
+        });
+    }
+
+    // Toolbar
+    const toolbarDefaults = {
+        copy: { icon: '<i class="fa-solid fa-copy"></i>', help: "Copiar al portapapeles", title: "Copiar" },
+        csv: { icon: '<i class="fa-solid fa-file-csv"></i>', help: "Exportar a CSV", title: "CSV" },
+        print: { icon: '<i class="fa-solid fa-print"></i>', help: "Imprimir documento", title: "Imprimir" }
+    };
+
+    const toolbarContainer = document.getElementById('ontoy-toolbar-container');
+    if (toolbarContainer && pageConfig.toolbar) {
+        toolbarContainer.innerHTML = '';
+        const buttons = pageConfig.toolbar.buttons || [];
+        buttons.forEach(btnKey => {
+            const config = toolbarDefaults[btnKey] || {};
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'ontoy-feature-btn';
+            btn.innerHTML = config.icon || '';
+            btn.title = config.title || '';
+            if (config.help) btn.setAttribute('data-help', config.help);
+            toolbarContainer.appendChild(btn);
+        });
+    }
+
+    // Breadcrumbs
+    const bcContainer = document.getElementById('ontoy-breadcrumb-container');
+    if (bcContainer) {
+        bcContainer.innerHTML = '';
+        const breadcrumbs = pageConfig.breadcrumbs || [];
+        breadcrumbs.forEach((bc, i) => {
+            if (!bc) return;
+            const el = document.createElement(bc.url ? 'a' : 'span');
+            if (bc.url) el.href = bc.url;
+            el.className = `ontoy-bc-item ${!bc.url ? 'ontoy-current' : ''}`;
+            el.textContent = bc.label || '';
+            bcContainer.appendChild(el);
+            if (i < breadcrumbs.length - 1) {
+                bcContainer.append(' › ');
+            }
+        });
+    }
+
+    // Help text
+    const helpDisplay = document.getElementById('ontoy-help-display');
+    if (helpDisplay && pageConfig.help) {
+        helpDisplay.textContent = pageConfig.help;
+    }
+}
+
