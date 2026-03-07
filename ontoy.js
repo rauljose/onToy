@@ -1134,16 +1134,14 @@ class MainMenu {
 
 /* ============================================================
    FEATURE BAR
-   FEATURE BAR
    ============================================================ */
-
 const FeatureHeader = {
 
     init(pageConfig) {
         pageConfig = pageConfig || {};
 
         // Internal helper to render an item (Action or Toolbar item)
-        const renderCommand = (container, item) => {
+        const renderCommand = (container, item, isToolbar) => {
             if (!item) return;
 
             const isLink = !!item.href;
@@ -1160,7 +1158,10 @@ const FeatureHeader = {
                 el.href = item.href;
                 if (item.target) el.target = item.target;
             } else {
-                el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
+                if(isToolbar)
+                    el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
+                else
+                    el.className = `ontoy-feature-btn ${item.primary ? 'ontoy-feature-primary' : ''}`;
                 el.type = 'button';
                 if (typeof item.action === 'function') {
                     el.onclick = (e) => {
@@ -1178,15 +1179,38 @@ const FeatureHeader = {
         const titleEl = document.getElementById('ontoy-feature-title');
         if (titleEl) titleEl.textContent = pageConfig.title || '';
 
-// 2. Actions
+        // 2. Actions
+        let actionDefaults = {
+            new: {
+                label: '<i class="fa-solid fa-plus"></i> Nuevo',
+                primary: true,
+                help: "Crear un nuevo registro",
+                href: window.location.pathname + "?action=new"
+            },
+            back: {
+                label: '<i class="fa-solid fa-arrow-left"></i> Atrás',
+                help: "Volver a la pantalla anterior",
+                action: () => {
+                    if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                        window.location.href = document.referrer;
+                    } else {
+                        window.location.href = './';
+                    }
+                }
+            }
+        };
         const actionContainer = document.getElementById('ontoy-action-container');
         if (actionContainer) {
             actionContainer.innerHTML = '';
-            (pageConfig.actions || []).forEach(act => renderCommand(actionContainer, act));
+            (pageConfig.actions || []).forEach(actItem => {
+                // If it's a string like "new", get from defaults; else use the object
+                const config = (typeof actItem === 'string') ? actionDefaults[actItem] : actItem;
+                renderCommand(actionContainer, config, false); // isToolbar = false
+            });
         }
 
         // 3. Toolbar (Resolved from defaults or custom objects)
-        const toolbarDefaults = {
+        let toolbarDefaults = {
             copy: {
                 label: '<i class="fa-solid fa-copy"></i>',
                 help: "Copiar al portapapeles",
@@ -1212,7 +1236,7 @@ const FeatureHeader = {
             (pageConfig.toolbar || []).forEach(tbItem => {
                 // If it's a string like "copy", get from defaults; else use the object
                 const config = (typeof tbItem === 'string') ? toolbarDefaults[tbItem] : tbItem;
-                renderCommand(toolbarContainer, config);
+                renderCommand(toolbarContainer, config, true);
             });
         }
 
