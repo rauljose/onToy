@@ -24,6 +24,44 @@ onToy gives you a ready-made application shell (top bar, navigation, feature hea
 2. Open `ontoy.php` in your browser.
 3. Create the database table from `db_schema.sql` and point `api/favmenu.php` at your DB to enable persistent favorites (a mock API is included for previewing the UI without a database).
 
+## Usage: Draggable Dialogs
+
+`DialogUtil` (in `ontoy.js`) provides modal dialogs that can be dragged around the screen by their header. Two helpers are ready to use out of the box and return a `Promise`, so you can `await` the user's choice:
+
+```js
+// A draggable alert — resolves when the user clicks "Aceptar" or closes it
+await DialogUtil.alert("Los cambios se guardaron correctamente.", "Éxito", "success");
+
+// A draggable confirm — resolves to true (Aceptar) or false (Cancelar)
+const ok = await DialogUtil.confirm("¿Eliminar este registro?", "Confirmar", "warning");
+if (ok) {
+    // proceed with deletion
+}
+```
+
+The third argument sets the icon: `alert` accepts `info`, `success`, `warning`, or `error`; `confirm` accepts `question`, `warning`, or `info`.
+
+To make your own dialog draggable, give it an `.ontoy-dlg-header` and wire its `pointerdown` event to `DialogUtil.dragStart`:
+
+```html
+<dialog id="myDialog" class="ontoy-dlg">
+    <header class="ontoy-dlg-header">
+        <b>Mi Diálogo</b>
+        <button type="button" class="ontoy-dlg-close" aria-label="Cerrar">&times;</button>
+    </header>
+    <div class="ontoy-dlg-content">Contenido personalizado…</div>
+</dialog>
+```
+
+```js
+const dlg = document.getElementById('myDialog');
+dlg.addEventListener('pointerdown', (e) => DialogUtil.dragStart(e, dlg));
+dlg.querySelector('.ontoy-dlg-close').onclick = () => dlg.close();
+dlg.showModal();
+```
+
+Dragging is ignored when the pointer starts on a `button`, `input`, or `select`, so controls inside the header stay clickable.
+
 ## Project Structure
 
 | File | Purpose |
