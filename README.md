@@ -8,7 +8,7 @@ onToy gives you a ready-made application shell (top bar, navigation, feature hea
 
 ## Features
 
-- **App shell layout** — `ontoy.php` assembles the full page: container, top bar, feature bar, main content, and footer via simple PHP includes.
+- **Template layout** — `ontoy.php` assembles the full page: container, top bar, feature bar, main content, and footer via simple PHP includes.
 - **Hierarchical main menu** — collapsible, keyboard-accessible navigation menu built from a JSON data structure, with groups, links, icons, and separators.
 - **Favorites menu** — pin the current page, reorder favorites by drag-and-drop, and customize each with an emoji icon, color, and bold styling.
 - **Feature header** — per-page header with title, icon, breadcrumbs, action buttons, contextual help text, and a toolbar.
