@@ -1,6 +1,6 @@
 # onToy
 
-A lightweight PHP + vanilla-JavaScript UI layout kit for building admin/back-office web apps — no framework, no build step.
+A lightweight PHP + vanilla-JavaScript UI layout kit — no framework, no build step.
 
 ## Overview
 
