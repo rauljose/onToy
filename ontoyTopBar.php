@@ -1,3 +1,4 @@
+<?php include("ontoyMenu.php"); ?>
 <header class="ontoy-topbar">
     <div class="ontoy-topbar-section">
         <a href="/" class="ontoy-logo">TOY</a>
@@ -6,7 +7,7 @@
         <!-- Favorites Menu Integration Point -->
         <div class="favmnu-wrapper" id="favMenuContainer" style="display: inline-block;">
             <button type="button" class="favmnu-trigger" id="favMenuTrigger" title="Menú de Favoritos" aria-label="Favoritos">
-                <i class="fa-duotone fa-solid fa-thumbtack fa-rotate-by" style="--fa-secondary-color: #ff0000; --fa-secondary-opacity: 1; --fa-rotate-angle: 22deg;"></i>
+                <i class="fa-duotone fa-solid fa-thumbtack fa-rotate-by" style="--fa-secondary-color: #ff0000; --fa-secondary-opacity: 1; --fa-rotate-angle: 22deg;"></i> Fav
             </button>
             <dialog class="favmnu-dropdown" id="favMenuDialog">
                 <!-- div class="favmnu-section-title">Mis Favoritos</div -->
@@ -30,7 +31,7 @@
         <!-- Main Hierarchical Menu Integration Point -->
         <div class="mainmnu-wrapper" id="mainMenuContainer" style="display: inline-block;">
             <button type="button" class="mainmnu-trigger" id="mainMenuTrigger" title="Menú Principal" aria-label="Menú Principal">
-                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-bars" style="color:white!important;--fa-secondary-color: white;--fa-primary-color:white"></i>Menu
             </button>
             <dialog class="mainmnu-dropdown" id="mainMenuDialog">
                 <div class="mainmnu-header">

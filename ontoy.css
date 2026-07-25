@@ -548,7 +548,7 @@ Keep background-color as a simple semi-transparent hex or rgba.
     border: 1px solid #cbd5e1;
     border-radius: 4px;
     font-size: 0.9rem;
-    width: 100%;
+    /* width: 100%; */
     font-family: inherit;
 }
 .ontoy-input:focus {

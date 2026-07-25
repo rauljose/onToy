@@ -144,30 +144,6 @@ function openIconPicker(triggerEl, hiddenInput, icons = DEFAULT_ICONS) {
     dlg.showModal();
 }
 
-function openIconPickerOLD(triggerEl, hiddenInput, icons = DEFAULT_ICONS) {
-    const dlg = document.getElementById('globalIconPicker');
-    const grid = dlg.querySelector('.icon-picker-grid');
-
-    if (!grid.innerHTML) {
-        icons.forEach(iconStr => {
-            const btn = document.createElement('div');
-            btn.className = 'icon-option';
-            btn.textContent = iconStr || '\u200B';
-            if (iconStr === '') btn.title = '(vacío)';
-            btn.onclick = () => {
-                hiddenInput.value = iconStr;
-                triggerEl.querySelector('span:first-child').textContent = iconStr || '';
-                dlg.close();
-            };
-            grid.appendChild(btn);
-        });
-    }
-
-    const rect = triggerEl.getBoundingClientRect();
-    dlg.style.left = (rect.left + window.scrollX) + 'px';
-    dlg.style.top = (rect.bottom + window.scrollY + 2) + 'px';
-    dlg.showModal();
-}
 
 if(document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', initGlobalIconPicker);
@@ -701,137 +677,6 @@ class FavoritesMenu {
         dlg.showModal();
     }
 
-    manageDialogOLD() {
-        this._is_dlgOpen = true;
-        let me = this;
-        const dlg = document.createElement('dialog');
-        dlg.className = 'ontoy-dlg';
-        dlg.innerHTML = `
-    <header class="ontoy-dlg-header" style="background-color: lightgray"><b>📝 Editar Favoritos</b><button class="ontoy-dlg-close">&times;</button></header>
-    <div class="ontoy-dlg-content"><div id="dlg_sort_list" class="ontoy-dlg-sortable-list"></div></div>
-    <footer class="ontoy-dlg-footer">
-      <button id="mng_close">Cerrar</button>
-      <button id="mng_save" style="background:#2563eb;color:white;border:none;">Guardar Todo</button>
-    </footer>`;
-        document.body.appendChild(dlg);
-        const list = dlg.querySelector('#dlg_sort_list');
-
-        const load = () => {
-            list.innerHTML = this.links.map(l => {
-                // Generate a stable ID for the hidden input (optional, but clean)
-                const iconInputId = `icon_input_${l.id}`;
-                return `
-        <div class="ontoy-dlg-sort-row" data-id="${l.id}">
-          <div class="ontoy-dlg-sort-handle">☰</div>
-          <input type="text" value="${this.htmlentites(l.name)}" class="ontoy-dlg-col-name">
-          
-          <!-- ✅ Hidden input with SAME CLASS as old <select> -->
-          <input type="hidden" 
-                 class="ontoy-dlg-col-icon" 
-                 id="${iconInputId}" 
-                 value="${this.quotes(l.icon || '')}">
-          
-          <!-- Visual trigger -->
-          <div class="icon-select-trigger" data-input-id="${iconInputId}">
-            <span>${l.icon || ''}</span>
-            <span class="icon-caret">▼</span>
-          </div>
-          
-          <input type="color" style="cursor:pointer;" value="${l.color}" class="ontoy-dlg-col-color">
-          <button class="ontoy-dlg-btn ontoy-dlg-bold-toggle ${l.bold == '1' ? 'ontoy-dlg-bold-active' : ''}">B</button>
-          <button class="ontoy-dlg-btn ontoy-dlg-btn-del">🗑</button>
-        </div>`;
-            }).join('');
-        };
-        load();
-
-        // Initialize icon pickers for each row
-        list.querySelectorAll('.icon-select-trigger').forEach(trigger => {
-            const inputId = trigger.getAttribute('data-input-id');
-            const hiddenInput = dlg.querySelector(`#${inputId}`);
-
-            // Open global picker
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-
-                // Position and open global picker
-                const rect = trigger.getBoundingClientRect();
-                const picker = document.getElementById('globalIconPicker');
-                const grid = picker.querySelector('.icon-picker-grid');
-
-                // Store reference to target input
-                window._activeIconPickerInput = hiddenInput;
-                window._activeIconPickerTrigger = trigger;
-
-                // Build grid
-                grid.innerHTML = '';
-                this.MNU_ICONS.forEach(iconStr => {
-                    const btn = document.createElement('div');
-                    btn.className = 'icon-option';
-                    btn.textContent = iconStr || '\u200B';
-                    if (iconStr === '') btn.title = '(empty)';
-                    btn.addEventListener('click', () => {
-                        const icon = iconStr;
-                        hiddenInput.value = icon; // update hidden input
-                        trigger.querySelector('span:first-child').textContent = icon || '';
-                        picker.close();
-                        window._activeIconPickerInput = null;
-                        window._activeIconPickerTrigger = null;
-                    });
-                    grid.appendChild(btn);
-                });
-
-                // Position
-                picker.style.left = (rect.left + window.scrollX) + 'px';
-                picker.style.top = (rect.bottom + window.scrollY + 2) + 'px';
-                picker.showModal();
-            });
-        });
-
-
-        if (typeof Sortable !== 'undefined') {
-            new Sortable(list, {handle: '.ontoy-dlg-sort-handle', animation: 150});
-        } else {
-            console.error("SortableJS not loaded");
-        }
-        list.onclick = async(e) => {
-            const row = e.target.closest('.ontoy-dlg-sort-row');
-            if(e.target.classList.contains('ontoy-dlg-bold-toggle')) e.target.classList.toggle('ontoy-dlg-bold-active');
-            if(e.target.classList.contains('ontoy-dlg-btn-del')) {
-                const name = row.querySelector('.ontoy-dlg-col-name').value;
-                if(await DialogUtil.confirm(`¿Seguro de borrar la opción del menu "${name}"?`)) row.remove();
-            }
-        };
-
-        dlg.querySelector('#mng_save').onclick = async() => {
-            // ✅ This line stays EXACTLY THE SAME!
-            const newData = Array.from(list.children).map((row, i) => ({
-                id: row.dataset.id,
-                orden: i,
-                name: row.querySelector('.ontoy-dlg-col-name').value,
-                icon: row.querySelector('.ontoy-dlg-col-icon').value, // ← still works!
-                color: row.querySelector('.ontoy-dlg-col-color').value,
-                bold: row.querySelector('.ontoy-dlg-bold-toggle').classList.contains('ontoy-dlg-bold-active') ? '1' : '0',
-                url: this.links.find(x => x.id == row.dataset.id).url
-            }));
-            this.links = await this.updateAll(newData);
-            this.render();
-            dlg.remove();
-            me._is_dlgOpen = false;
-        };
-
-        const closeHandler = () => {
-            me._is_dlgOpen = false;
-            dlg.remove();
-        };
-        dlg.querySelector('#mng_close').onclick = closeHandler;
-        dlg.querySelector('.ontoy-dlg-close').onclick = closeHandler;
-
-        dlg.addEventListener('pointerdown', (e) => DialogUtil.dragStart(e, dlg));
-        dlg.addEventListener('click', e => e.stopPropagation());
-        dlg.showModal();
-    }
-
     /**
      *
      * { "accion": "list" } returns:
@@ -862,7 +707,7 @@ class FavoritesMenu {
                 throw new Error(`HTTP Error ${response.status}`);
             const result = await response.json();
             if(!result.success) {
-                DialogUti.alert(result.message || 'Error al guardar el menú.', 'Error', 'error');
+                DialogUtil.alert(result.message || 'Error al guardar el menú.', 'Error', 'error');
                 return [];
             }
             return result.data;
