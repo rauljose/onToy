@@ -108,46 +108,37 @@
     <?php include("ontoyTopBar.php"); ?>
     <?php include("ontoyFeatureBar.php"); ?>
     <script>
-        (function() {
-            function initFeature() {
-                FeatureHeader.init({
-                    title: "Diálogos",
-                    help: "Ejemplos de diálogos arrastrables y redimensionables de onToy.",
-                    breadcrumbs: [
-                        { label: "🏠", url: "ontoyExample.php", help: "Inicio" },
-                        { label: "Herramientas", url: null, help: "Componentes de la interfaz" },
-                        { label: "Diálogos", url: null, help: "Muestra como llamar los dialgos" }
-                    ],
-                    actions: [
-                        {
-                            label: '<i class="fa-solid fa-plus"></i> Nuevo',
-                            id: "btn-new",
-                            primary: true,
-                            help: "Abrir el formulario en un diálogo",
-                            action: runForm
-                        },
-                        {
-                            label: '<i class="fa-solid fa-pen"></i> Renombrar',
-                            id: "btn-rename",
-                            help: "Abrir el diálogo de un solo campo",
-                            action: runPrompt
-                        },
-                        {
-                            label: '<i class="fa-solid fa-trash"></i> Eliminar',
-                            id: "btn-delete",
-                            help: "Abrir el diálogo de confirmación",
-                            action: runConfirm
-                        }
-                    ],
-                    toolbar: ["print", "copy"]
-                });
-            }
-
-            if(document.readyState === 'loading')
-                document.addEventListener('DOMContentLoaded', initFeature);
-            else
-                initFeature();
-        })();
+        FeatureHeader.initOnLoad(() => ({
+            title: "Diálogos",
+            help: "Ejemplos de diálogos arrastrables y redimensionables de onToy.",
+            breadcrumbs: [
+                { label: "🏠", url: "ontoyExample.php", help: "Inicio" },
+                { label: "Herramientas", url: null, help: "Componentes de la interfaz" },
+                { label: "Diálogos", url: null, help: "Muestra como llamar los dialgos" }
+            ],
+            actions: [
+                {
+                    label: '<i class="fa-solid fa-plus"></i> Nuevo',
+                    id: "btn-new",
+                    primary: true,
+                    help: "Abrir el formulario en un diálogo",
+                    action: runForm
+                },
+                {
+                    label: '<i class="fa-solid fa-pen"></i> Renombrar',
+                    id: "btn-rename",
+                    help: "Abrir el diálogo de un solo campo",
+                    action: runPrompt
+                },
+                {
+                    label: '<i class="fa-solid fa-trash"></i> Eliminar',
+                    id: "btn-delete",
+                    help: "Abrir el diálogo de confirmación",
+                    action: runConfirm
+                }
+            ],
+            toolbar: ["print", "copy"]
+        }));
     </script>
 
     <main class="ontoy-main">
@@ -262,7 +253,7 @@ if(datos) {
         <div class="dlgdemo-log-head">
             <h3><i class="fa-solid fa-terminal"></i> Resultado devuelto</h3>
             <button type="button" id="demo-log-clear"
-                    class="ontoy-dlg-btn ontoy-dlg-btn-secondary">Borrar consola de resultados/button>
+                    class="ontoy-dlg-btn ontoy-dlg-btn-secondary">Borrar consola de resultados</button>
         </div>
         <pre class="dlgdemo-log" id="demo-log">// Abre cualquier diálogo para ver aquí lo que resuelve su promesa.</pre>
     </main>

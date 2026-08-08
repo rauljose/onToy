@@ -711,7 +711,7 @@ class FavoritesMenu {
                 return [];
             }
             return result.data;
-        } catch(er) {
+        } catch(err) {
             DialogUtil.alert(`Fallo de conexión: ${err.message}`, 'Error de Red/Server', 'error');
             return [];
         }
@@ -981,6 +981,18 @@ class MainMenu {
    FEATURE BAR
    ============================================================ */
 const FeatureHeader = {
+
+    initOnLoad(configInput) {
+        const doInit = () => {
+            const config = typeof configInput === 'function' ? configInput() : configInput;
+            this.init(config);
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', doInit);
+        } else {
+            doInit();
+        }
+    },
 
     init(pageConfig) {
         pageConfig = pageConfig || {};
