@@ -15,28 +15,20 @@
         <?php include("ontoyTopBar.php"); ?>
         <?php include("ontoyFeatureBar.php"); ?>
         <script>
-            (function() {
-                function initFeature() {
-                    FeatureHeader.init({
-                        title: "La hoja",
-                        help: "Ayuda de la hoja",
-                        breadcrumbs: [
-                            { label: "🏠", url: "ontoyExample.php", help: "Inicio" },
-                            { label: "Ej. Layout", url: null, help: "Esta hoja" },
-                            { label: "Ej. Dialogs", url: "ontoyExampleDialogs.php", help: "Uso de dialogos" },
-                        ],
-                        actions: [
-                            { label: "Nuevo", id: "btn-new", primary: true, help: "Crear nuevo registro" },
-                            { label: "Exportar", id: "btn-export", help: "Exportar datos" }
-                        ],
-                        toolbar: ["copy", "csv", "print"]
-                    });
-                }
-                if(document.readyState === 'loading')
-                    document.addEventListener('DOMContentLoaded', initFeature);
-                else
-                    initFeature();
-            })();
+            FeatureHeader.initOnLoad({
+                title: "La hoja",
+                help: "Ayuda de la hoja",
+                breadcrumbs: [
+                    { label: "🏠", url: "ontoyExample.php", help: "Inicio" },
+                    { label: "Ej. Layout", url: null, help: "Esta hoja" },
+                    { label: "Ej. Dialogs", url: "ontoyExampleDialogs.php", help: "Uso de dialogos" },
+                ],
+                actions: [
+                    { label: "Nuevo", id: "btn-new", primary: true, help: "Crear nuevo registro" },
+                    { label: "Exportar", id: "btn-export", help: "Exportar datos" }
+                ],
+                toolbar: ["copy", "csv", "print"]
+            });
         </script>
 
         <main class="ontoy-main">
