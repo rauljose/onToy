@@ -66,6 +66,7 @@ trigger.onclick = (e) => {
         const grid = this.dialog.querySelector('.icon-picker-grid');
         grid.innerHTML = ''; // Clear just in case
 
+        const fragment = document.createDocumentFragment();
         this.icons.forEach(iconStr => {
             const btn = document.createElement('div');
             btn.className = 'icon-option';
@@ -78,8 +79,9 @@ trigger.onclick = (e) => {
                 this.close();
             };
 
-            grid.appendChild(btn);
+            fragment.appendChild(btn);
         });
+        grid.appendChild(fragment);
 
         const rect = triggerEl.getBoundingClientRect();
         this.dialog.style.left = (rect.left + window.scrollX) + 'px';
@@ -125,6 +127,7 @@ function openIconPicker(triggerEl, hiddenInput, icons = DEFAULT_ICONS) {
 
     grid.innerHTML = '';
 
+    const fragment = document.createDocumentFragment();
     icons.forEach(iconStr => {
         const btn = document.createElement('div');
         btn.className = 'icon-option';
@@ -135,8 +138,9 @@ function openIconPicker(triggerEl, hiddenInput, icons = DEFAULT_ICONS) {
             triggerEl.querySelector('span:first-child').textContent = iconStr || '';
             dlg.close();
         };
-        grid.appendChild(btn);
+        fragment.appendChild(btn);
     });
+    grid.appendChild(fragment);
 
     const rect = triggerEl.getBoundingClientRect();
     dlg.style.left = (rect.left + window.scrollX) + 'px';
