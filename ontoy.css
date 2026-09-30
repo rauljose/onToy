@@ -710,7 +710,7 @@ Keep background-color as a simple semi-transparent hex or rgba.
 
 /* 5. Corner (Where bars meet) Prevents the 'white box' bug in the bottom-right corner */
 .ontoy-scrollable::-webkit-scrollbar-corner {
-    background-color: #f1f5f9;
+    background-color: rgba(0,0,0,0);
 }
 
 /* 6. Resizer (For resizable elements) Ensures the resize handle matches the track color */
@@ -724,7 +724,7 @@ Keep background-color as a simple semi-transparent hex or rgba.
 
 /* 8. Corner (Where bars meet) Prevents the 'white box' bug */
 .ontoy-scrollable::-webkit-scrollbar-corner {
-    background-color: #f1f5f9;
+    background-color: rgba(0,0,0,0);
 }
 
 /* 9. Resizer (For resizable elements) Matches the track color */
